@@ -50,7 +50,7 @@ export const Images: FC<ImagesState> = () => {
         setImages(imageData);
         setTotal(imageData.length);
       } catch (error) {
-        setError(error.message);
+        setError((error as Error).message );
       } finally {
         setIsLoading(false);
       }

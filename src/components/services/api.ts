@@ -16,7 +16,7 @@ export interface ImageData {
 }
 
 interface SearchResponse {
-  data: ImageData[];
+  results: ImageData[];
 }
 
 export const getImages = async (
@@ -27,7 +27,7 @@ export const getImages = async (
     const response: AxiosResponse<SearchResponse> = await axios.get(
       `/search/photos?query=${query}&page=${page}`
     );
-    const imageData: ImageData[] = response.data.data;
+    const imageData: ImageData[] = response.data.results;
     console.log(imageData);
     return imageData;
   } catch (error) {

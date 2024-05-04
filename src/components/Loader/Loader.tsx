@@ -1,4 +1,4 @@
-import  { BeatLoader} from "react-loader-spinner"
+import  { Audio } from "react-loader-spinner"
 import { FC } from "react";
 
 
@@ -10,7 +10,7 @@ interface LoaderProps {
 export const Loader: FC<LoaderProps> = () => {
   return (
     <div>
-      <BeatLoader color="#00BFFF"  />
+      <Audio color="#00BFFF"  />
     </div>
   );
 };
