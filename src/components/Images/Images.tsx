@@ -24,13 +24,16 @@ export const Images: FC<ImagesState> = () => {
   const [query, setQuery] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [pictures, setImages] = useState<ImageData[]>([]);
-  const [total, setTotal] = useState<number>(0);
+
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [hasMoreImages, setHasMoreImages] = useState<boolean>(false);
+
   const onSearch = (value: string) => {
     setImages([]);
     setPage(1);
-    setTotal(0);
+
     setQuery(value.trim());
     setError(null);
   };
@@ -47,8 +50,10 @@ export const Images: FC<ImagesState> = () => {
       setIsLoading(true);
       try {
         const imageData = await getImages(query, page);
-        setImages(imageData);
-        setTotal(imageData.length);
+        setImages(prevImages => [...prevImages, ...imageData]);
+        setHasMoreImages(imageData.length > 0);
+     
+       
       } catch (error) {
         setError((error as Error).message );
       } finally {
@@ -75,9 +80,10 @@ export const Images: FC<ImagesState> = () => {
       <SearchBar onSearch={onSearch} />
       {error && <ErrorMessage message={`Error: ${error}`} />}
       <ImageGallery images={pictures} onImageClick={handleImageClick} />
-      {pictures.length > 0 && total > pictures.length && (
+      {hasMoreImages && (
         <LoadMoreButton onClick={onClick}>View more</LoadMoreButton>
       )}
+    
       {pictures.length === 0 && query !== "" && !error && (
         <p>sorry by your queries {query} nothing was found</p>
       )}
